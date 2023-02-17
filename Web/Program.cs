@@ -1,4 +1,5 @@
 namespace Web;
+using Middleware;
 
 public class Program
 {
@@ -8,6 +9,14 @@ public class Program
         var app = builder.Build();
 
         app.MapGet("/", () => "Hello World!");
+
+        app.UseMiddleware<CredentialAuthenticator>();
+        app.Run(async context =>
+        {
+            await context.Response.WriteAsync(
+                "Authenticated!"
+            );
+        });
 
         app.Run();
     }
